@@ -62,11 +62,13 @@ public class Bank {
         Bank bank = new Bank();
         bank.setUp();
         bank.allTrades();
-        bank.setUpPeople();
+        //bank.setUpPeople();
         TraderAssetDesk equityDesk = bank.getTraderAssetDesk(AssetType.COMMODITIES);
+        TraderAssetDesk algorithmicDesk = bank.getTraderAssetDesk(AssetType.ALGORITHMIC);
+        TraderAssetDesk commodotiesDesk = bank.getTraderAssetDesk(AssetType.COMMODITIES);
         
-        System.out.println(equityDesk.getSize());
-        //equityDesk.printAllTraderDetails(); // This now includes team leads and their groups
+        //System.out.println(equityDesk.getSize());
+        algorithmicDesk.printAllTraderDetails(); // This now includes team leads and their groups
        
     
     }

@@ -6,6 +6,7 @@ public class TraderAssetDesk {
     protected int wib = -30000;
     protected int wia = 30000;
 
+    private TraderGroup currentTeamLeadGroup = null; // Holds the current team lead's group
     protected TraderGroup traderGroup;
     private List<TraderGroup> allTraderGroups = new ArrayList<>();  
     private AssetType assetType;
@@ -20,15 +21,15 @@ public class TraderAssetDesk {
 
     public void addTrader(Person trader) {
         if (trader.getRole() == Role.TEAM_LEAD) {
-            // Create new group for the team lead and add them to it
-            TraderGroup newGroup = new TraderGroup(trader.getName() + " Group");
-            newGroup.add(trader);
-            allTraderGroups.add(newGroup);
-            // Optionally, also add team lead to the main group if required
-            // traderGroup.add(trader);
+            // Create a new group for this team lead
+            currentTeamLeadGroup = new TraderGroup(trader.getName() + " Group");
+            currentTeamLeadGroup.add(trader);
+            allTraderGroups.add(currentTeamLeadGroup);
+        } else if (currentTeamLeadGroup != null) {
+            // Add this trader to the current team lead's group
+            currentTeamLeadGroup.add(trader);
         } else {
-            // Determine correct group for trader and add them
-            // This might involve checking a mapping of team leads to groups
+            // If no team lead has been encountered yet, add to the main group
             traderGroup.add(trader);
         }
     }
@@ -52,10 +53,15 @@ public class TraderAssetDesk {
 
     
     public void printAllTraderDetails(){
+        System.out.println("Asset Deck: " + this.getAssetType().name()); // Print once for the asset type
         for (TraderGroup group : allTraderGroups) {
+            if (group == traderGroup) { 
+                continue; 
+            }
             group.printTraderDetails();
         }
     }
+    
 
     
 }
